@@ -1,5 +1,9 @@
 //App flow
-export 'login_page.dart';
+export 'login/auth_service.dart';
+export 'login/login_page.dart'; //Choose login service
+export 'login/login_with_email_page.dart';
+export 'login/register_page.dart';
+export 'login/reset_password_page.dart';
 export 'select_room_page.dart';
 export 'home_page.dart'; //Choose what to do -breakfast -services -whatsapp
 

@@ -89,10 +89,13 @@ class MenuPage extends StatelessWidget {
                                 menuSelected,
                                 style: const TextStyle(fontSize: 20),
                               ),
-                              trailing: const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              trailing: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Icon(
-                                  CustomIcons.coffee,
+                                  menuSelected == 'Drinks.'
+                                      ? CustomIcons.coffee
+                                      : CustomIcons.restaurant,
                                   color: kBackgroundColor,
                                   size: 32,
                                 ),

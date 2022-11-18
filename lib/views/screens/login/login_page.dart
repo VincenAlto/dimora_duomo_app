@@ -2,12 +2,18 @@ import 'package:dimora_duomo/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import '../widgets/widgets.dart';
-import 'screens.dart';
+import '../../widgets/widgets.dart';
+import '../screens.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  // final LoginController controller = Get.put(LoginController());
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +53,7 @@ class LoginPage extends StatelessWidget {
                             color: kTertiaryColor,
                             iconColor: kButtonSecondaryColor,
                             onClick: () => {
-                              Get.to(() => SelectRoomPage()),
+                              AuthService().signInWithFacebook(),
                             },
                           ),
                           SizedBox(
@@ -60,22 +66,23 @@ class LoginPage extends StatelessWidget {
                             color: kTertiaryColor,
                             iconColor: kButtonSecondaryColor,
                             onClick: () => {
-                              Get.to(() => SelectRoomPage()),
+                              // controller.signInWithGoogle,
+                              AuthService().signInWithGoogle(),
                             },
                           ),
-                          SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.02),
-                          //Instagram Sign-in button
-                          CustomButton(
-                            inputText: 'Sign in with Instagram',
-                            icon: FontAwesomeIcons.instagram,
-                            color: kTertiaryColor,
-                            iconColor: kButtonSecondaryColor,
-                            onClick: () => {
-                              Get.to(() => SelectRoomPage()),
-                            },
-                          ),
+                          // SizedBox(
+                          //     height:
+                          //         MediaQuery.of(context).size.height * 0.02),
+                          //Twitter Sign-in button
+                          // CustomButton(
+                          //   inputText: 'Sign in with Twitter',
+                          //   icon: FontAwesomeIcons.twitter,
+                          //   color: kTertiaryColor,
+                          //   iconColor: kButtonSecondaryColor,
+                          //   onClick: () => {
+                          //     Get.to(() => SelectRoomPage()),
+                          //   },
+                          // ),
                           Container(
                             padding: const EdgeInsets.all(16.0),
                             child: const Text(
@@ -90,7 +97,7 @@ class LoginPage extends StatelessWidget {
                             color: kButtonSecondaryColor,
                             iconColor: kTertiaryColor,
                             onClick: () => {
-                              Get.to(() => SelectRoomPage()),
+                              Get.to(() => LoginEmailPage()),
                             },
                           ),
                           // const SizedBox(height: 40.0)

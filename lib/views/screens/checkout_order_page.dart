@@ -147,15 +147,16 @@ class CheckOutOrderPage extends GetView<MenuController> {
 
                   // Set OrderStatus = TRUE after users complete the order
                   dropdownController.changeOrderStatus(true),
-                  debugPrint(
-                      dropdownController.orderSubmitted.value.toString()),
+                  //  Set date order
+                  // debugPrint(
+                  //     dropdownController.orderSubmitted.value.toString()),
                   // Show Order submitted screen immediatly
                   Future.delayed(const Duration(seconds: 0), () {
                     Get.to(() => const OrderSubmitted());
                   }),
                   // After 3 seconds go back to HomePage
                   Future.delayed(const Duration(seconds: 3), () {
-                    Get.to(() => HomePage(), arguments: roomSelected);
+                    Get.to(() => const HomePage(), arguments: roomSelected);
                   }),
                 },
             },

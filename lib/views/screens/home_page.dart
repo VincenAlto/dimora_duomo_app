@@ -1,3 +1,11 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:async';
+import 'dart:io';
+import 'package:dimora_duomo/views/screens/screens.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
 import 'package:dimora_duomo/custom_icons_icons.dart';
@@ -7,11 +15,50 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import '../widgets/widgets.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final String roomSelected = Get.arguments;
+
+  bool orderValue = false;
+
+  // late DateTime dataOrdine;
+  // String dataOrdineFormatted = '';
+  // late DateTime adesso;
+  // String adessoFormatted = '';
+
+  // String oraFormat = '';
   final InputController controller = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.resetOrderFlag();
+
+    // adesso = DateTime.now();
+    // adessoFormatted = DateFormat('yyyy-MM-dd hh:mm:ss').format(adesso);
+    // debugPrint('adesso: $adessoFormatted');
+
+    // // check if dataOrdineFormatted IS BEFORE adessoFormatted
+    // debugPrint('dataOrdineFormatted: $dataOrdineFormatted');
+    // debugPrint(
+    //     'data ordine salvata: ${GetStorage().read('dataOrdineFormatted').toString()}');
+    // if (GetStorage().read('dataOrdineFormatted').toString().isNotEmpty) {
+    //   dataOrdineFormatted = GetStorage().read('dataOrdineFormatted').toString();
+    //   if (dataOrdineFormatted.compareTo(adessoFormatted) < 0) {
+    //     GetStorage().write('order', false);
+    //     debugPrint('dataOrdineFormatted: $dataOrdineFormatted');
+    //     debugPrint('adessoFormatted: $adessoFormatted');
+    //   }
+    // }
+
+    // debugPrint('Read: ${GetStorage().read('order').toString()}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +77,10 @@ class HomePage extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(FontAwesomeIcons.arrowLeft),
             onPressed: () {
-              if (!controller.orderSubmitted.value) {
-                Get.back();
-              }
+              // if (!controller.checkOrderLocallySaved()) {
+              //   Get.back();
+              // }
+              Get.to(() => SelectRoomPage());
             },
           ),
         ),
@@ -66,37 +114,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              // Material(
-              //   elevation: 5,
-              //   shadowColor: Colors.grey[300],
-              //   child: Container(
-              //     color: kBackgroundColor,
-              //     width: MediaQuery.of(context).size.width,
-              //     height: MediaQuery.of(context).size.height * 0.07,
-              //     alignment: Alignment.center,
-              //     child: Text(
-              //       roomSelected,
-              //       style: const TextStyle(
-              //           fontSize: 24,
-              //           color: kPrimaryColor,
-              //           fontWeight: FontWeight.bold),
-              //     ),
-              //   ),
-              // ),
-              // Container(
-              //   color: Colors.pink[200],
-              //   width: MediaQuery.of(context).size.width,
-              //   height: MediaQuery.of(context).size.height * 0.25,
-              //   alignment: Alignment.bottomCenter,
-              //   child: const Text(
-              //     'Our services.',
-              //     style: TextStyle(
-              //       fontSize: 24,
-              //       color: kPrimaryColor,
-              //       fontWeight: FontWeight.w400,
-              //     ),
-              //   ),
-              // ),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.only(top: 16.0),
@@ -105,9 +122,9 @@ class HomePage extends StatelessWidget {
                       CustomCard(
                         inputText: 'Book \nyour breakfast.',
                         icon: CustomIcons.coffee,
-                        orderSubmitted: controller.orderSubmitted.value,
+                        orderSubmitted: controller.checkOrderLocallySaved(),
                         //Check is order is already submitted
-                        onClick: controller.orderSubmitted.value
+                        onClick: controller.checkOrderLocallySaved()
                             ? () {
                                 Get.snackbar(
                                   'Order already submitted',
@@ -122,18 +139,79 @@ class HomePage extends StatelessWidget {
                         color: kSecondaryColor,
                       ),
                       const SizedBox(height: 15.0),
-                      CustomCard(
-                        inputText: 'Look at room \nservices.',
-                        icon: CustomIcons.tray,
-                        onClick: () {},
-                        orderSubmitted: false,
-                        color: kSecondaryColor,
+                      // CustomCard(
+                      //   inputText: 'Look at room \nservices.',
+                      //   icon: CustomIcons.tray,
+                      //   onClick: () {},
+                      //   orderSubmitted: false,
+                      //   color: kSecondaryColor,
+                      // ),
+                      // ElevatedButton(
+                      //   child: const Text(
+                      //     'True',
+                      //     style: TextStyle(fontSize: 24),
+                      //   ),
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       GetStorage().write('order', true);
+                      //       debugPrint(
+                      //           'Read: ${GetStorage().read('order').toString()}');
+
+                      //       dataOrdine = DateTime.now();
+                      //       dataOrdineFormatted =
+                      //           DateFormat('yyyy-MM-dd hh:mm:ss')
+                      //               .format(dataOrdine);
+                      //       GetStorage().write(
+                      //           'dataOrdineFormatted', dataOrdineFormatted);
+                      //       debugPrint(
+                      //           'dataOrdineLocal: ${GetStorage().read('dataOrdineFormatted').toString()}');
+
+                      //       debugPrint(
+                      //           'orderLocal: ${GetStorage().read('order').toString()}');
+                      //     });
+                      //   },
+                      // ),
+                      // ElevatedButton(
+                      //     child: const Text(
+                      //       'False',
+                      //       style: TextStyle(fontSize: 24),
+                      //     ),
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         adesso = DateTime.now();
+                      //         adessoFormatted =
+                      //             DateFormat('yyyy-MM-dd hh:mm:ss')
+                      //                 .format(adesso);
+                      //         debugPrint('adesso: $adessoFormatted');
+                      //         if (dataOrdineFormatted
+                      //                 .compareTo(adessoFormatted) <
+                      //             0) {
+                      //           GetStorage().write('order', false);
+                      //         }
+
+                      //         debugPrint(
+                      //             'Read: ${GetStorage().read('order').toString()}');
+                      //       });
+                      //     }),
+
+                      Text(
+                        'Order status: ${controller.checkOrderLocallySaved().toString()}',
+                        style: const TextStyle(
+                            color: kTertiaryColor, fontSize: 18),
+                      ),
+
+                      Text(
+                        'Saved date: ${controller.checkDataOrdineLocallySaved().toString()}',
+                        style: const TextStyle(
+                            color: kTertiaryColor, fontSize: 18),
                       ),
                       const SizedBox(height: 15.0),
                       CustomCard(
                         inputText: 'Contact us on Whatsapp.',
                         icon: CustomIcons.whatsapp,
-                        onClick: () {},
+                        onClick: () {
+                          openWhatsApp();
+                        },
                         orderSubmitted: false,
                         color: kSecondaryColor,
                       ),
@@ -141,57 +219,32 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               )
-              // Expanded(
-              //   child: Container(
-              //     // color: Colors.pink[300],
-              //     padding: const EdgeInsets.only(top: 25),
-              //     width: MediaQuery.of(context).size.width,
-              //     child: Column(
-              //       children: <Widget>[
-              //         CustomButton(
-              //             inputText: 'Book your breakfast',
-              //             icon: FontAwesomeIcons.arrowRight,
-              //             color: kButtonColor,
-              //             iconColor: kTertiaryColor,
-              //             onClick: () => {
-              //                   // Get.to(() => BreakfastPage(),
-              //                   //     arguments: roomSelected)
-              //                   //Get.to(() => MenuPage(), arguments: stanza)
-              //                   // Navigator.push(
-              //                   //     context,
-              //                   //     MaterialPageRoute(
-              //                   //       builder: (context) => MenuPage(
-              //                   //         selectedRoomBreakfast: stanza,
-              //                   //         /*widget.value*/
-              //                   //       ),
-              //                   //     ))
-              //                 }),
-              //         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              //         CustomButton(
-              //             inputText: 'Look at room services',
-              //             icon: FontAwesomeIcons.arrowRight,
-              //             color: kButtonColor,
-              //             iconColor: kTertiaryColor,
-              //             onClick: () => {
-              //                   // Get.to(() => RoomServicesPage(),
-              //                   //     arguments: roomSelected)
-              //                 }),
-              //         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              //         CustomButton(
-              //           inputText: 'Contact us on whatsapp',
-              //           icon: FontAwesomeIcons.whatsapp,
-              //           color: kButtonColor,
-              //           iconColor: kTertiaryColor,
-              //           onClick: () => {},
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
             ]),
           ),
         ),
       ),
     );
+  }
+
+  openWhatsApp() async {
+    String whatsapp = '+393398742237';
+    String message = 'Room $roomSelected';
+    var whatsappURlAndroid = "whatsapp://send?phone=$whatsapp&text=$message";
+    var whatappURLIos = "https://wa.me/$whatsapp?text=${Uri.parse(message)}";
+    if (Platform.isIOS) {
+      // for iOS phone only
+      if (await canLaunch(whatappURLIos)) {
+        await launch(whatappURLIos, forceSafariVC: false);
+      } else {
+        Get.snackbar('$context', "WhatsApp no installed");
+      }
+    } else {
+      // android , web
+      if (await canLaunch(whatsappURlAndroid)) {
+        await launch(whatsappURlAndroid);
+      } else {
+        Get.snackbar('$context', "WhatsApp no installed");
+      }
+    }
   }
 }

@@ -8,7 +8,7 @@ class CustomDropDown extends StatelessWidget {
   final InputController dropdownController = InputController();
   final String hintText;
   final List<String> list;
-
+  final bool isLocated;
   final void Function(String) onAnswer;
 
   CustomDropDown({
@@ -16,6 +16,7 @@ class CustomDropDown extends StatelessWidget {
     required this.hintText,
     required this.list,
     required this.onAnswer,
+    required this.isLocated,
   });
 
   @override
@@ -49,15 +50,16 @@ class CustomDropDown extends StatelessWidget {
                   value: dropdownController.selected.value.isEmpty
                       ? null
                       : dropdownController.selected.value,
-                  items: list.map((e) {
-                    return DropdownMenuItem(
-                      value: e,
-                      child: Text(e,
-                          style: const TextStyle(
-                              fontSize: 18.0, color: kPrimaryColor)),
-                    );
-                  }).toList(),
-                  // validator: dropdownController.validator,
+                  items: isLocated
+                      ? list.map((e) {
+                          return DropdownMenuItem(
+                            value: e,
+                            child: Text(e,
+                                style: const TextStyle(
+                                    fontSize: 18.0, color: kPrimaryColor)),
+                          );
+                        }).toList()
+                      : null,
                   onChanged: (newValue) {
                     dropdownController.setSelectedDD(newValue!);
                     onAnswer(newValue);

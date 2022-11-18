@@ -79,67 +79,69 @@ class SelectMenuPage extends GetView<MenuController> {
                   const SizedBox(height: 50),
                   // CONTAINER TEXT BREAKFAST
                   Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     alignment: Alignment.centerLeft,
                     child: const Text(
                       'Choose what you want \nto have for breakfast!',
                       style: TextStyle(
                           color: kSecondaryColor,
-                          fontSize: 32.0,
+                          fontSize: 28.0,
                           fontWeight: FontWeight.w300),
                     ),
                   ),
                   Expanded(
-                      child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Column(
-                      children: [
-                        CustomCardMenu(
-                          inputText: 'Drinks.',
-                          color: kTertiaryColor,
-                          icon: CustomIcons.coffee,
-                          onClick: () {
-                            Get.to(() => MenuPage(), arguments: [
-                              roomSelected,
-                              locationSelected,
-                              hourSelected,
-                              'Drinks.',
-                            ]);
-                          },
-                        ),
-                        CustomCardMenu(
-                          inputText: 'Foods.',
-                          color: kTertiaryColor,
-                          icon: CustomIcons.restaurant,
-                          onClick: () {
-                            Get.to(() => MenuPage(), arguments: [
-                              roomSelected,
-                              locationSelected,
-                              hourSelected,
-                              'Foods.',
-                            ]);
-                          },
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: menuController.order.isEmpty
-                              ? const Text(
-                                  '0 product quantity selected.',
-                                  style: TextStyle(
-                                    color: kTertiaryColor,
-                                    fontSize: 18.0,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Column(
+                        children: [
+                          CustomCardMenu(
+                            inputText: 'Drinks.',
+                            color: kTertiaryColor,
+                            icon: CustomIcons.coffee,
+                            onClick: () {
+                              Get.to(() => MenuPage(), arguments: [
+                                roomSelected,
+                                locationSelected,
+                                hourSelected,
+                                'Drinks.',
+                              ]);
+                            },
+                          ),
+                          CustomCardMenu(
+                            inputText: 'Foods.',
+                            color: kTertiaryColor,
+                            icon: CustomIcons.restaurant,
+                            onClick: () {
+                              Get.to(() => MenuPage(), arguments: [
+                                roomSelected,
+                                locationSelected,
+                                hourSelected,
+                                'Foods.',
+                              ]);
+                            },
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: menuController.order.isEmpty
+                                ? const Text(
+                                    '0 product quantity selected.',
+                                    style: TextStyle(
+                                      color: kTertiaryColor,
+                                      fontSize: 18.0,
+                                    ),
+                                  )
+                                : Text(
+                                    ' ${menuController.order.values.reduce((sum, element) => sum + element)} product quantity selected.',
+                                    style: const TextStyle(
+                                      color: kTertiaryColor,
+                                      fontSize: 18.0,
+                                    ),
                                   ),
-                                )
-                              : Text(
-                                  ' ${menuController.order.values.reduce((sum, element) => sum + element)} product quantity selected.',
-                                  style: const TextStyle(
-                                    color: kTertiaryColor,
-                                    fontSize: 18.0,
-                                  ),
-                                ),
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                  )),
+                  ),
                 ]),
           ),
         ),

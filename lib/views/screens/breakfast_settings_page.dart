@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:dimora_duomo/services/firebase.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import '../widgets/stateful_radio_button.dart';
 
 class BreakfastSettingsPage extends StatefulWidget {
@@ -22,7 +24,7 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
 
   final InputController dropdownController = Get.find();
   final FirestoreDB database = FirestoreDB();
-
+  bool isLocated = false;
   var locationSelected = '';
   var hourSelected = '';
 
@@ -98,28 +100,11 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
                   onAnswer: (ans) {
                     setState(() {
                       locationSelected = ans;
+                      isLocated = true;
                       debugPrint('stateful ans: $locationSelected');
                     });
                   },
                 ),
-                // CustomRadioButton(
-                //   onAnswer: (ans) {
-                //     locationSelected = ans;
-                //     setState(() {
-                //       // if (locationSelected == locations[0]) {
-                //       //   lista = hours;
-                //       //   debugPrint('location selected is : ${locations[0]}');
-                //       // } else if (locationSelected == locations[1]) {
-                //       //   lista = hoursBar;
-                //       //   debugPrint('location selected is : ${locations[1]}');
-                //       // } else {
-                //       //   debugPrint('ma perchè');
-                //       // }
-                //     });
-
-                //     debugPrint('Stampa \$locationSelected: $locationSelected');
-                //   },
-                // ),
                 const Text(
                   'AT (HOURS)',
                   style: TextStyle(
@@ -129,8 +114,7 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
                 ),
                 // DROPDOWN HOUR
                 CustomDropDown(
-                  hintText:
-                      (locationSelected == locations[0]) ? 'Hour' : 'Hours Bar',
+                  hintText: 'Hours',
                   //Check locationSelected == At the Bar, to show bar hours
                   list: (locationSelected == locations[0]) ? hours : hoursBar,
                   onAnswer: (ans) {
@@ -138,6 +122,7 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
 
                     debugPrint('Stampa \$hourSelected: $hourSelected');
                   },
+                  isLocated: isLocated,
                 ),
                 const SizedBox(height: 25)
               ],
@@ -170,18 +155,24 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
                       hour: hourSelected,
                     ),
                   ),
-
+                  // After added order set orderLocal value = true
+                  GetStorage().write('order', true),
+                  dropdownController.dataOrdine = DateTime.now(),
+                  dropdownController.dataOrdineFormatted =
+                      DateFormat('yyyy-MM-dd')
+                          .format(dropdownController.dataOrdine),
+                  GetStorage().write('dataOrdineFormatted',
+                      dropdownController.dataOrdineFormatted),
                   // Set OrderStatus = TRUE if User select breakfast at the bar
-                  dropdownController.changeOrderStatus(true),
-                  debugPrint(
-                      dropdownController.orderSubmitted.value.toString()),
+                  //dropdownController.changeOrderStatus(true),
+
                   // Show Order submitted screen immediatly
                   Future.delayed(const Duration(seconds: 0), () {
                     Get.to(() => const OrderSubmitted());
                   }),
                   // After 3 seconds go back to HomePage
                   Future.delayed(const Duration(seconds: 3), () {
-                    Get.to(() => HomePage(), arguments: roomSelected);
+                    Get.to(() => const HomePage(), arguments: roomSelected);
                   }),
                 }
               //Check Location Selected == In My Room and hour is setted correctly

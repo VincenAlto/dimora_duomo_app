@@ -3,14 +3,23 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'controllers/controllers.dart';
 import 'views/screens/screens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await GetStorage.init();
   Get.put(MenuController(), permanent: true);
   Get.put(InputController());
+  Get.put(AuthController());
+  // await Firebase.initializeApp().then((value) {
+  //   Get.put(MenuController(), permanent: true);
+  //   Get.put(InputController());
+  //   Get.put(AuthController());
+  //   GetStorage.init();
+  // });
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -36,7 +45,8 @@ class MyApp extends StatelessWidget {
           elevation: 0, //size of AppBar shadow
         ),
       ),
-      home: const LoginPage(),
+      home: AuthService().handleAuthState(),
+      // home: LoginPage(),
     );
   }
 }

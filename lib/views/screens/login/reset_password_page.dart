@@ -1,19 +1,14 @@
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
-import 'package:flutter/foundation.dart';
+import 'package:dimora_duomo/views/screens/screens.dart';
+import 'package:dimora_duomo/views/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:dimora_duomo/views/widgets/widgets.dart';
-import 'screens.dart';
 
-class SelectRoomPage extends StatelessWidget {
-  SelectRoomPage({super.key});
-
-  final roomNumberController = TextEditingController();
-
-  // var languageSelected = '';
+class ResetPasswordPage extends StatelessWidget {
+  ResetPasswordPage({super.key});
+  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +21,9 @@ class SelectRoomPage extends StatelessWidget {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.logout),
+          icon: const Icon(FontAwesomeIcons.arrowLeft),
           onPressed: () {
-            AuthService().signOut();
-            AuthController.instance.logOut();
+            Get.back();
           },
         ),
       ),
@@ -50,63 +44,42 @@ class SelectRoomPage extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                            text: 'Select ',
+                            text: 'Reset ',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(
                             text: 'your\n',
                             style: TextStyle(fontWeight: FontWeight.w300)),
                         TextSpan(
-                            text: 'room ',
-                            style: TextStyle(fontWeight: FontWeight.w300)),
-                        TextSpan(
-                            text: 'number.',
+                            text: 'password.',
                             style: TextStyle(fontWeight: FontWeight.bold))
                       ]),
                 ),
               ),
-              const SizedBox(height: 40),
               Expanded(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.width * 0.5,
                   child: Column(
                     children: [
-                      // CustomDropDown(
-                      //   hintText: 'Language',
-                      //   list: languages,
-                      //   onAnswer: (ans) {
-                      //     languageSelected = ans;
-                      //     debugPrint(languageSelected);
-                      //   },
-                      // ),
-                      // const SizedBox(height: 50),
-                      //CustomTextFormField(), commentato perchè è questo scritto sotto
+                      const SizedBox(height: 50),
+                      // EMAIL
                       TextFormField(
-                        keyboardType:
-                            defaultTargetPlatform == TargetPlatform.iOS
-                                ? const TextInputType.numberWithOptions(
-                                    decimal: false, signed: true)
-                                : TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        maxLength: 3,
-                        controller: roomNumberController,
+                        controller: emailController,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
+                          hintText: 'Email',
                           isDense: true,
-                          hintText: 'Room number',
                           hintStyle: const TextStyle(
                               fontSize: 18.0, color: Colors.black54),
                           border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(30.0)),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ]),
           ),
         ),
@@ -117,27 +90,13 @@ class SelectRoomPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
           child: CustomButton(
-            inputText: 'Go to services',
-            icon: FontAwesomeIcons.clipboard,
+            inputText: 'Reset',
+            icon: FontAwesomeIcons.arrowRight,
             color: kButtonSecondaryColor,
             iconColor: kTertiaryColor,
             onClick: () => {
-              if (roomNumberController.text != '')
-                {
-                  debugPrint('Room inserted: ${roomNumberController.text}'),
-                  // debugPrint('Language selected: $languageSelected'),
-                  Get.to(() => const HomePage(),
-                      arguments: roomNumberController.text)
-                }
-              else
-                {
-                  Get.snackbar(
-                    'Attention',
-                    'You have to set room number.',
-                    colorText: kBackgroundColor,
-                    backgroundColor: kButtonSecondaryColor,
-                  ),
-                }
+              AuthController.instance
+                  .resetPassword(emailController.text.trim()),
             },
           ),
         ),
