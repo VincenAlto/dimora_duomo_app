@@ -34,4 +34,45 @@ class FirestoreDB {
         (documentSnapshot) => debugPrint("Added order: ${documentSnapshot.id}"),
         onError: (e) => debugPrint("Error writing document $e"));
   }
+
+  // Future<void> updateOrder(
+  //   OrderModel order,
+  //   String field,
+  //   dynamic newValue,
+  // ) {
+  //   return _firebaseFirestore
+  //       .collection('orders')
+  //       .where('id', isEqualTo: order.id)
+  //       .get()
+  //       .then((querySnapshot) => {
+  //             querySnapshot.docs.first.reference.update({field: newValue})
+  //           });
+  // }
+
+  // Get a list of orders from Firestore
+  Stream<List<OrderListModel>> getOrders() {
+    return _firebaseFirestore
+        .collection('orders')
+        .orderBy('room')
+        // .where('location', isEqualTo: 'In my Room')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => OrderListModel.fromSnapshot(doc))
+          .toList();
+    });
+  }
+
+  // Get a list of orders from Firestore
+  Stream<List<OrderListModel>> getOrders0(int room) {
+    return _firebaseFirestore
+        .collection('orders')
+        .where('room', isEqualTo: room)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => OrderListModel.fromSnapshot(doc))
+          .toList();
+    });
+  }
 }

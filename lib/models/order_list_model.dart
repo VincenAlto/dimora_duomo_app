@@ -1,24 +1,20 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OrderModel {
+class OrderListModel {
   int room;
   String name;
   int quantity;
   String location;
   String hour;
 
-  OrderModel({
+  OrderListModel({
     required this.room,
     required this.name,
     required this.quantity,
     required this.location,
     required this.hour,
   });
-
-  // @override
-  // List<Object?> get props {
-  //   return [name, quantity];
-  // }
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,8 +26,14 @@ class OrderModel {
     };
   }
 
-  String toJson() => json.encode(toMap());
+  factory OrderListModel.fromSnapshot(DocumentSnapshot snap) {
+    return OrderListModel(
+        room: snap['room'],
+        name: snap['name'],
+        hour: snap['hour'],
+        location: snap['location'],
+        quantity: snap['quantity']);
+  }
 
-  // @override
-  // bool get stringify => true;
+  String toJson() => json.encode(toMap());
 }

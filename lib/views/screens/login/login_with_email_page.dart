@@ -1,6 +1,5 @@
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
-import 'package:dimora_duomo/views/screens/login/register_page.dart';
 import 'package:dimora_duomo/views/screens/screens.dart';
 import 'package:dimora_duomo/views/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -97,40 +96,50 @@ class LoginEmailPage extends StatelessWidget {
                         ),
                       ),
                       Container(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          alignment: Alignment.centerLeft,
-                          child: TextButton(
-                            onPressed: () {
-                              Get.to(() => ResetPasswordPage());
-                            },
-                            child: const Text(
-                              'Forgot Password?',
-                              style: TextStyle(
-                                  color: kTertiaryColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )),
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              'Don\'t have an account?',
-                              style: TextStyle(color: kTertiaryColor),
-                            ),
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                Get.to(() => RegisterPage());
-                              },
-                              child: const Text(
-                                'Sign-up',
-                                style: TextStyle(
-                                    color: kTertiaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ))
-                        ],
-                      )
+                        child: AuthController.instance.staffValue
+                            ? null
+                            : Container(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                alignment: Alignment.centerLeft,
+                                child: TextButton(
+                                  onPressed: () {
+                                    Get.to(() => ResetPasswordPage());
+                                  },
+                                  child: const Text(
+                                    'Forgot Password?',
+                                    style: TextStyle(
+                                        color: kTertiaryColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                      ),
+                      Container(
+                        child: AuthController.instance.staffValue
+                            ? null
+                            : Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      'Don\'t have an account?',
+                                      style: TextStyle(color: kTertiaryColor),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.to(() => RegisterPage());
+                                    },
+                                    child: const Text(
+                                      'Sign-up',
+                                      style: TextStyle(
+                                          color: kTertiaryColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                      ),
                     ],
                   ),
                 ),

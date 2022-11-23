@@ -6,16 +6,20 @@ import 'package:dimora_duomo/services/firebase.dart';
 class MenuController extends GetxController {
   final FirestoreDB database = FirestoreDB();
 
+  static MenuController instance = Get.find();
+
   //equivalent of RxList<FoodModel> foods = RxList<FoodModel>([]);
   var foods = <FoodModel>[].obs;
   var drinks = <DrinkModel>[].obs;
   var order = <String, int>{}.obs;
+  var orderList = <OrderListModel>[].obs;
 
   @override
   onInit() {
     super.onInit();
     foods.bindStream(database.getFoods());
     drinks.bindStream(database.getDrinks());
+    orderList.bindStream(database.getOrders());
   }
 
   // ********* ORDER METHOD
@@ -49,17 +53,17 @@ class MenuController extends GetxController {
 //NEW ORDER ADD
 
   //Add item to Order Map
-  addOrder(String nmae) {
+  addOrder(String name) {
     //Set the quantity
-    int quatnity = returnQuantity(nmae);
+    int quantity = returnQuantity(name);
 
     //Check if item is already in the order
-    if (order.containsKey(nmae)) {
+    if (order.containsKey(name)) {
       //if so, increases its quantity
-      increaseOrder(nmae, quatnity);
+      increaseOrder(name, quantity);
     } else {
       //if not, set its quantity = 1
-      order[nmae] = 1;
+      order[name] = 1;
     }
 
     update();
@@ -68,45 +72,45 @@ class MenuController extends GetxController {
   }
 
   // Print as String quantity of specific item
-  printQuantity(String nmae) {
+  printQuantity(String name) {
     // debugPrint('$nmae quantity is ${order[nmae].toString()}');
-    if (order.containsKey(nmae)) {
-      return order[nmae].toString();
+    if (order.containsKey(name)) {
+      return order[name].toString();
     } else {
       return '0';
     }
   }
 
   // Return item quantity as int
-  returnQuantity(String nmae) {
-    if (order.containsKey(nmae)) {
-      return order[nmae];
+  returnQuantity(String name) {
+    if (order.containsKey(name)) {
+      return order[name];
     } else {
       return 0;
     }
   }
 
   // Increase the quantity of a food max 10
-  increaseOrder(String nmae, int quatnity) {
-    if (quatnity < 10) {
-      order[nmae] = quatnity + 1;
+  increaseOrder(String name, int quantity) {
+    if (quantity < 10) {
+      order[name] = quantity + 1;
     }
 
     update();
   }
 
   // Decrease the quantity of an item AND remove it if its quantity < 0
-  decreaseOrder(String nmae) {
+  decreaseOrder(String name) {
     //Set the quantity
-    int quatnity = returnQuantity(nmae);
+    int quantity = returnQuantity(name);
 
     //Check if item is already in the order
-    if (order.containsKey(nmae)) {
+    if (order.containsKey(name)) {
       //if so, decreases its quantity
-      if (quatnity > 1) {
-        order[nmae] = quatnity - 1;
+      if (quantity > 1) {
+        order[name] = quantity - 1;
       } else {
-        order.remove(nmae);
+        order.remove(name);
       }
     }
 
@@ -115,13 +119,12 @@ class MenuController extends GetxController {
 
 //NOT USED ANYMORE
   //remove a single item and its quantity from the Map Order
-  removeOrder(String nmae) {
-    order.remove(nmae);
+  removeOrder(String name) {
+    order.remove(name);
 
     update();
   }
 
-//NOT USED ANYMORE
   //Remove the whole map order after the order was added on firebase
   removeMapOrder() {
     debugPrint('Mappa prima del remove: $order');

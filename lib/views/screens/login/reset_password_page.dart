@@ -1,6 +1,5 @@
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
-import 'package:dimora_duomo/views/screens/screens.dart';
 import 'package:dimora_duomo/views/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

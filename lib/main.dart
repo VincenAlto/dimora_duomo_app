@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: kBackgroundColor,
         appBarTheme: AppBarTheme(
           backgroundColor: kBackgroundColor,
-          //systemOverlayStyle: SystemUiOverlayStyle.dark,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
           //titleTextStyle: const TextStyle(color: kPrimaryColor, fontSize: 24),
           shadowColor: Colors.grey[600],
           elevation: 0, //size of AppBar shadow

@@ -1,18 +1,12 @@
-// ignore_for_file: deprecated_member_use
-
-import 'dart:async';
 import 'dart:io';
 import 'package:dimora_duomo/views/screens/screens.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
 import 'package:dimora_duomo/custom_icons_icons.dart';
-import 'package:dimora_duomo/views/screens/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,37 +21,12 @@ class _HomePageState extends State<HomePage> {
 
   bool orderValue = false;
 
-  // late DateTime dataOrdine;
-  // String dataOrdineFormatted = '';
-  // late DateTime adesso;
-  // String adessoFormatted = '';
-
-  // String oraFormat = '';
   final InputController controller = Get.find();
 
   @override
   void initState() {
     super.initState();
     controller.resetOrderFlag();
-
-    // adesso = DateTime.now();
-    // adessoFormatted = DateFormat('yyyy-MM-dd hh:mm:ss').format(adesso);
-    // debugPrint('adesso: $adessoFormatted');
-
-    // // check if dataOrdineFormatted IS BEFORE adessoFormatted
-    // debugPrint('dataOrdineFormatted: $dataOrdineFormatted');
-    // debugPrint(
-    //     'data ordine salvata: ${GetStorage().read('dataOrdineFormatted').toString()}');
-    // if (GetStorage().read('dataOrdineFormatted').toString().isNotEmpty) {
-    //   dataOrdineFormatted = GetStorage().read('dataOrdineFormatted').toString();
-    //   if (dataOrdineFormatted.compareTo(adessoFormatted) < 0) {
-    //     GetStorage().write('order', false);
-    //     debugPrint('dataOrdineFormatted: $dataOrdineFormatted');
-    //     debugPrint('adessoFormatted: $adessoFormatted');
-    //   }
-    // }
-
-    // debugPrint('Read: ${GetStorage().read('order').toString()}');
   }
 
   @override
@@ -75,12 +44,10 @@ class _HomePageState extends State<HomePage> {
           // Remove back button AppBar
           automaticallyImplyLeading: false,
           leading: IconButton(
-            icon: const Icon(FontAwesomeIcons.arrowLeft),
+            icon: const Icon(Icons.logout),
             onPressed: () {
-              // if (!controller.checkOrderLocallySaved()) {
-              //   Get.back();
-              // }
-              Get.to(() => SelectRoomPage());
+              AuthService().signOut();
+              AuthController.instance.logOut();
             },
           ),
         ),
@@ -114,6 +81,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 10.0),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.only(top: 16.0),
@@ -139,6 +107,13 @@ class _HomePageState extends State<HomePage> {
                         color: kSecondaryColor,
                       ),
                       const SizedBox(height: 15.0),
+
+                      Text(
+                        FirebaseAuth.instance.currentUser!.email!,
+                        style: const TextStyle(color: kTertiaryColor),
+                      ),
+
+                      //CARD SERVICES NOT USED ANYMORE
                       // CustomCard(
                       //   inputText: 'Look at room \nservices.',
                       //   icon: CustomIcons.tray,
@@ -146,65 +121,53 @@ class _HomePageState extends State<HomePage> {
                       //   orderSubmitted: false,
                       //   color: kSecondaryColor,
                       // ),
-                      // ElevatedButton(
-                      //   child: const Text(
-                      //     'True',
-                      //     style: TextStyle(fontSize: 24),
-                      //   ),
-                      //   onPressed: () {
-                      //     setState(() {
-                      //       GetStorage().write('order', true);
-                      //       debugPrint(
-                      //           'Read: ${GetStorage().read('order').toString()}');
 
-                      //       dataOrdine = DateTime.now();
-                      //       dataOrdineFormatted =
-                      //           DateFormat('yyyy-MM-dd hh:mm:ss')
-                      //               .format(dataOrdine);
-                      //       GetStorage().write(
-                      //           'dataOrdineFormatted', dataOrdineFormatted);
-                      //       debugPrint(
-                      //           'dataOrdineLocal: ${GetStorage().read('dataOrdineFormatted').toString()}');
-
-                      //       debugPrint(
-                      //           'orderLocal: ${GetStorage().read('order').toString()}');
-                      //     });
-                      //   },
+                      // BUTTONS TO RESET HOUR
+                      // Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //     children: [
+                      //       ElevatedButton(
+                      //         style: ElevatedButton.styleFrom(
+                      //             backgroundColor: kButtonSecondaryColor,
+                      //             foregroundColor: kBackgroundColor),
+                      //         child: const Text(
+                      //           '1-1-2023',
+                      //           style: TextStyle(fontSize: 24),
+                      //         ),
+                      //         onPressed: () {
+                      //           setState(() {
+                      //             controller.now = DateTime(2023, 01, 01);
+                      //             debugPrint(controller.now.toString());
+                      //           });
+                      //         },
+                      //       ),
+                      //       ElevatedButton(
+                      //           style: ElevatedButton.styleFrom(
+                      //               backgroundColor: kButtonSecondaryColor,
+                      //               foregroundColor: kBackgroundColor),
+                      //           child: const Text(
+                      //             'now',
+                      //             style: TextStyle(fontSize: 24),
+                      //           ),
+                      //           onPressed: () {
+                      //             setState(() {
+                      //               controller.now = DateTime.now();
+                      //               GetStorage().write('order', true);
+                      //               debugPrint(controller.now.toString());
+                      //             });
+                      //           }),
+                      //     ]),
+                      // Text(
+                      //   'Order status: ${controller.checkOrderLocallySaved().toString()}',
+                      //   style: const TextStyle(
+                      //       color: kTertiaryColor, fontSize: 18),
                       // ),
-                      // ElevatedButton(
-                      //     child: const Text(
-                      //       'False',
-                      //       style: TextStyle(fontSize: 24),
-                      //     ),
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         adesso = DateTime.now();
-                      //         adessoFormatted =
-                      //             DateFormat('yyyy-MM-dd hh:mm:ss')
-                      //                 .format(adesso);
-                      //         debugPrint('adesso: $adessoFormatted');
-                      //         if (dataOrdineFormatted
-                      //                 .compareTo(adessoFormatted) <
-                      //             0) {
-                      //           GetStorage().write('order', false);
-                      //         }
 
-                      //         debugPrint(
-                      //             'Read: ${GetStorage().read('order').toString()}');
-                      //       });
-                      //     }),
-
-                      Text(
-                        'Order status: ${controller.checkOrderLocallySaved().toString()}',
-                        style: const TextStyle(
-                            color: kTertiaryColor, fontSize: 18),
-                      ),
-
-                      Text(
-                        'Saved date: ${controller.checkDataOrdineLocallySaved().toString()}',
-                        style: const TextStyle(
-                            color: kTertiaryColor, fontSize: 18),
-                      ),
+                      // Text(
+                      //   'Saved date: ${controller.checkDataOrdineLocallySaved().toString()}',
+                      //   style: const TextStyle(
+                      //       color: kTertiaryColor, fontSize: 18),
+                      // ),
                       const SizedBox(height: 15.0),
                       CustomCard(
                         inputText: 'Contact us on Whatsapp.',
@@ -233,15 +196,16 @@ class _HomePageState extends State<HomePage> {
     var whatappURLIos = "https://wa.me/$whatsapp?text=${Uri.parse(message)}";
     if (Platform.isIOS) {
       // for iOS phone only
-      if (await canLaunch(whatappURLIos)) {
-        await launch(whatappURLIos, forceSafariVC: false);
+      if (await canLaunchUrlString(whatappURLIos)) {
+        await launchUrlString(whatappURLIos,
+            mode: LaunchMode.externalApplication);
       } else {
         Get.snackbar('$context', "WhatsApp no installed");
       }
     } else {
       // android , web
-      if (await canLaunch(whatsappURlAndroid)) {
-        await launch(whatsappURlAndroid);
+      if (await canLaunchUrlString(whatsappURlAndroid)) {
+        await launchUrlString(whatsappURlAndroid);
       } else {
         Get.snackbar('$context', "WhatsApp no installed");
       }

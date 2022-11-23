@@ -2,6 +2,7 @@ import 'package:dimora_duomo/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import '../../../controllers/controllers.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
@@ -70,19 +71,6 @@ class _LoginPageState extends State<LoginPage> {
                               AuthService().signInWithGoogle(),
                             },
                           ),
-                          // SizedBox(
-                          //     height:
-                          //         MediaQuery.of(context).size.height * 0.02),
-                          //Twitter Sign-in button
-                          // CustomButton(
-                          //   inputText: 'Sign in with Twitter',
-                          //   icon: FontAwesomeIcons.twitter,
-                          //   color: kTertiaryColor,
-                          //   iconColor: kButtonSecondaryColor,
-                          //   onClick: () => {
-                          //     Get.to(() => SelectRoomPage()),
-                          //   },
-                          // ),
                           Container(
                             padding: const EdgeInsets.all(16.0),
                             child: const Text(
@@ -97,10 +85,38 @@ class _LoginPageState extends State<LoginPage> {
                             color: kButtonSecondaryColor,
                             iconColor: kTertiaryColor,
                             onClick: () => {
-                              Get.to(() => LoginEmailPage()),
+                              AuthController.instance.staffValue = false,
+                              Get.to(() => LoginEmailPage(), arguments: [
+                                AuthController.instance.staffValue
+                              ]),
                             },
                           ),
-                          // const SizedBox(height: 40.0)
+                          const SizedBox(height: 10.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'Are you a staff member?',
+                                  style: TextStyle(color: kTertiaryColor),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    AuthController.instance.staffValue = true;
+                                    Get.to(() => LoginEmailPage(), arguments: [
+                                      AuthController.instance.staffValue
+                                    ]);
+                                  },
+                                  child: const Text(
+                                    'Click here',
+                                    style: TextStyle(
+                                        color: kTertiaryColor,
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                            ],
+                          )
                         ],
                       ),
                     ),

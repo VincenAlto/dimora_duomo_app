@@ -136,7 +136,7 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
           child: CustomButton(
-            inputText: 'Submit',
+            inputText: 'Continue',
             icon: FontAwesomeIcons.arrowRight,
             color: kButtonSecondaryColor,
             iconColor: kTertiaryColor,
@@ -157,10 +157,9 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
                   ),
                   // After added order set orderLocal value = true
                   GetStorage().write('order', true),
-                  dropdownController.dataOrdine = DateTime.now(),
+                  // dropdownController.dataOrdine = DateTime.now(),
                   dropdownController.dataOrdineFormatted =
-                      DateFormat('yyyy-MM-dd')
-                          .format(dropdownController.dataOrdine),
+                      DateFormat('yyyy-MM-dd').format(DateTime.now()),
                   GetStorage().write('dataOrdineFormatted',
                       dropdownController.dataOrdineFormatted),
                   // Set OrderStatus = TRUE if User select breakfast at the bar

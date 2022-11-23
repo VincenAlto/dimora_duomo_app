@@ -43,6 +43,8 @@ class AuthService {
     FirebaseAuth.instance.signOut();
     // FacebookAuth.instance.logOut();
   }
+  //Email user logged
+  //FirebaseAuth.instance.currentUser!.email!
 
   //LOGIN WITH FACEBOOK
   signInWithFacebook() async {

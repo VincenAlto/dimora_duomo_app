@@ -9,6 +9,7 @@ class AuthController extends GetxController {
 
   late Rx<User?> _user;
   FirebaseAuth auth = FirebaseAuth.instance;
+  bool staffValue = false;
 
   @override
   void onReady() {
@@ -24,7 +25,12 @@ class AuthController extends GetxController {
       debugPrint('login page');
       Get.offAll(() => const LoginPage());
     } else {
-      Get.offAll(() => SelectRoomPage());
+      if (staffValue) {
+        Get.offAll(() => StaffPage());
+      } else {
+        Get.offAll(() => SelectRoomPage());
+        // Get.offAll(() => StaffPage());
+      }
     }
   }
 

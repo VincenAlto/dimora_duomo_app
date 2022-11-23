@@ -26,6 +26,7 @@ class InputController extends GetxController {
     radioSelected.value = value;
   }
 
+  //NOT USED
   //Controlla se il pulsante è selezionato tramite index
   bool checkSelectedRB(int value) {
     if (radioSelected.value == value) {
@@ -34,61 +35,17 @@ class InputController extends GetxController {
     return false;
   }
 
-//??
-  bool checkstocaRB(int value) {
-    if (radioSelected.value == 1 || radioSelected.value == 2) {
-      return true;
-    }
-    return false;
-  }
-
-  /*
-  ******************************************
-  ********* TextField Controller *********
-  ******************************************
-  */
-  // final textFormFieldController = TextEditingController();
-
-  // @override
-  // void onClose() {
-  //   textFormFieldController.dispose();
-  //   super.onClose();
-  // }
-
-  // String? validator(String? value) {
-  //   if (value == null || value.isEmpty) {
-  //     return 'Please this field must be filled';
-  //   }
-  //   return null;
-  // }
-
 /*
   ******************************************
   ********* OrderSubmitted Controller *********
   ******************************************
   */
 
-  // DateTime now = DateTime(0);
-  // // late DateTime nowFormatted = DateTime(now.year, now.month, now.day);
-  // DateTime dateOrder = DateTime(0);
-  // // late DateTime dateOrderFormatted =
-  // // DateTime(dateOrder.year, dateOrder.month, dateOrder.day);
-  // late String dateOrderFormatted = '';
-  // late String nowFormatted = '';
-  // late String locallyDate = '';
-  // late bool localStatusOrder;
-
-  late DateTime adesso;
-  String adessoFormatted = '';
+  late DateTime now;
+  // DateTime now = DateTime.now();
+  String nowFormatted = '';
   late DateTime dataOrdine;
   String dataOrdineFormatted = '';
-
-  bool orderSubmitted = false;
-
-  changeOrderStatus(bool newValue) {
-    //For boleans change value with single =
-    orderSubmitted = newValue;
-  }
 
   // Check if Order Date Local is not null //STRING
   checkDataOrdineLocallySaved() {
@@ -108,19 +65,19 @@ class InputController extends GetxController {
 
   // Reset value of Order if is before current day //BOOL
   resetOrderFlag() {
-    // adesso = DateTime(2023, 01, 01);
-    adesso = DateTime.now();
-    adessoFormatted = DateFormat('yyyy-MM-dd').format(adesso);
+    // now = DateTime(2023, 01, 01);
+    now = DateTime.now();
+    nowFormatted = DateFormat('yyyy-MM-dd').format(now);
 
     dataOrdineFormatted = checkDataOrdineLocallySaved();
     debugPrint('PRIMAdataOrdineFormatted: $dataOrdineFormatted');
-    debugPrint('PRIMAadessoFormatted: $adessoFormatted');
+    debugPrint('PRIMAadessoFormatted: $nowFormatted');
     if (dataOrdineFormatted.isNotEmpty) {
       // check if dataOrdineFormatted IS BEFORE adessoFormatted
-      if (dataOrdineFormatted.compareTo(adessoFormatted) < 0) {
+      if (dataOrdineFormatted.compareTo(nowFormatted) < 0) {
         GetStorage().write('order', false);
         debugPrint('dataOrdineFormatted: $dataOrdineFormatted');
-        debugPrint('adessoFormatted: $adessoFormatted');
+        debugPrint('adessoFormatted: $nowFormatted');
       }
     }
   }

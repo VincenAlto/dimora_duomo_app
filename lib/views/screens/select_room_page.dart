@@ -102,7 +102,7 @@ class SelectRoomPage extends StatelessWidget {
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(30.0)),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -126,8 +126,12 @@ class SelectRoomPage extends StatelessWidget {
                 {
                   debugPrint('Room inserted: ${roomNumberController.text}'),
                   // debugPrint('Language selected: $languageSelected'),
+
+                  //Reset the whole map order after the room number change
+                  MenuController.instance.removeMapOrder(),
+
                   Get.to(() => const HomePage(),
-                      arguments: roomNumberController.text)
+                      arguments: roomNumberController.text),
                 }
               else
                 {

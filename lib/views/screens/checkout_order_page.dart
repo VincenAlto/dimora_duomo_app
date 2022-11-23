@@ -8,6 +8,8 @@ import 'package:dimora_duomo/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 
 class CheckOutOrderPage extends GetView<MenuController> {
   final arguments = Get.arguments;
@@ -145,11 +147,19 @@ class CheckOutOrderPage extends GetView<MenuController> {
                     );
                   }),
 
-                  // Set OrderStatus = TRUE after users complete the order
-                  dropdownController.changeOrderStatus(true),
+                  // After added order set orderLocal value = true
+                  GetStorage().write('order', true),
+                  // dropdownController.dataOrdine = DateTime.now(),
+                  dropdownController.dataOrdineFormatted =
+                      DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                  GetStorage().write('dataOrdineFormatted',
+                      dropdownController.dataOrdineFormatted),
+                  //Remove the whole map order after the order was added on firebase
+                  menuController.removeMapOrder(),
+
                   //  Set date order
-                  // debugPrint(
-                  //     dropdownController.orderSubmitted.value.toString()),
+                  // debugPrint(dropdownController.orderSubmitted.value.toString()),
+
                   // Show Order submitted screen immediatly
                   Future.delayed(const Duration(seconds: 0), () {
                     Get.to(() => const OrderSubmitted());

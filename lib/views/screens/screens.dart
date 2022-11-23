@@ -13,7 +13,8 @@ export 'select_menu_page.dart';
 export 'menu_page.dart';
 export 'checkout_order_page.dart';
 
-//Services?
+//Staff only
+export 'staff_page.dart';
 
 //whatsapp?
 

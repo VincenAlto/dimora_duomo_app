@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
