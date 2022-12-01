@@ -3,7 +3,6 @@ import 'package:dimora_duomo/views/screens/screens.dart';
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
 import 'package:dimora_duomo/custom_icons_icons.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -94,11 +93,50 @@ class _HomePageState extends State<HomePage> {
                         //Check is order is already submitted
                         onClick: controller.checkOrderLocallySaved()
                             ? () {
-                                Get.snackbar(
-                                  'Order already submitted',
-                                  'You can order again tomorrow.',
-                                  colorText: kBackgroundColor,
-                                  backgroundColor: kButtonSecondaryColor,
+                                // Get.snackbar(
+                                //   'Order already submitted',
+                                //   'You can order again tomorrow.',
+                                //   colorText: kBackgroundColor,
+                                //   backgroundColor: kButtonSecondaryColor,
+                                // );
+                                Get.defaultDialog(
+                                  title: 'Order already submitted',
+                                  middleText: 'Do you want change the order?',
+                                  backgroundColor: kSecondaryColor,
+                                  confirm: ElevatedButton(
+                                      onPressed: (() {
+                                        Get.to(
+                                            () => const BreakfastSettingsPage(),
+                                            arguments: roomSelected);
+                                      }),
+                                      style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          backgroundColor: kBackgroundColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0))),
+                                      child: const Text(
+                                        'Change',
+                                        style: TextStyle(
+                                            color: kButtonSecondaryColor),
+                                      )),
+                                  cancel: ElevatedButton(
+                                      onPressed: (() {
+                                        Get.back();
+                                      }),
+                                      style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          backgroundColor: kBackgroundColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0))),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                            color: kButtonSecondaryColor),
+                                      )),
                                 );
                               }
                             //if not go to Breakfast Setting Page
@@ -108,10 +146,18 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 15.0),
 
-                      Text(
-                        FirebaseAuth.instance.currentUser!.email!,
-                        style: const TextStyle(color: kTertiaryColor),
-                      ),
+                      //EMAIL TEXT
+                      // Text(
+                      //   FirebaseAuth.instance.currentUser!.email!,
+                      //   style: const TextStyle(color: kTertiaryColor),
+                      // ),
+
+                      //SHORTCUT TO STAFF PAGE
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       Get.to(() => StaffPage());
+                      //     },
+                      //     child: const Text('staff')),
 
                       //CARD SERVICES NOT USED ANYMORE
                       // CustomCard(

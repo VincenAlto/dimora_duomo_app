@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:dimora_duomo/constants.dart';
 // import 'package:dimora_duomo/controllers/controllers.dart';
+// import 'package:dimora_duomo/models/models.dart';
 // import 'package:dimora_duomo/views/screens/prova2.dart';
 // import 'package:dimora_duomo/views/screens/screens.dart';
 // import 'package:dimora_duomo/views/widgets/widgets.dart';
@@ -8,8 +9,8 @@
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:get/get.dart';
 
-// class Prova extends StatelessWidget {
-//   Prova({super.key});
+// class Prova3 extends StatelessWidget {
+//   Prova3({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -66,38 +67,16 @@
 //                               ConnectionState.waiting) {
 //                             return const Text("Loading");
 //                           }
-//                           return ListView(
-//                             children: snapshot.data!.docs
-//                                 .map((DocumentSnapshot document) {
-//                                   Map<String, dynamic> data =
-//                                       document.data()! as Map<String, dynamic>;
+//                           QuerySnapshot querySnapshot = snapshot.requireData;
+//                           return ListView.builder(
+//                             itemCount: querySnapshot.docs.length,
+//                             itemBuilder: (context, index) {
+//                               // Access the User instance
+//                               // querySnapshot.docs[index].data;
 
-//                                   // var orders = data['orders'];
-//                                   return Card(
-//                                     child: Column(children: [
-//                                       Text(data['room'].toString()),
-//                                       Text(data['hour']),
-//                                       Text(
-//                                           data['orders'][0]['name'].toString()),
-//                                       // Text(data['orders']
-//                                       //     .forEach((i) => print(i['name']))),
-//                                       getListOrders(data['orders']),
-//                                       // Text(orders.length.toString())
-//                                       // ListView.builder(
-//                                       //     itemCount: orders.length,
-//                                       //     itemBuilder:
-//                                       //         (BuildContext context, index) {
-//                                       //       return Column(
-//                                       //         children: [
-//                                       //           Text(orders.first.toString())
-//                                       //         ],
-//                                       //       );
-//                                       //     })
-//                                     ]),
-//                                   );
-//                                 })
-//                                 .toList()
-//                                 .cast(),
+//                               return Text(
+//                                   querySnapshot.docs[index].data.toString());
+//                             },
 //                           );
 //                         },
 //                       ),

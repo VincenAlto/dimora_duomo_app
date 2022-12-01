@@ -127,6 +127,10 @@ class SelectRoomPage extends StatelessWidget {
                   debugPrint('Room inserted: ${roomNumberController.text}'),
                   // debugPrint('Language selected: $languageSelected'),
 
+                  //Save room number in global variable to use it in firebase.dart
+                  InputController.instance.roomGlobal.value =
+                      roomNumberController.text,
+
                   //Reset the whole map order after the room number change
                   MenuController.instance.removeMapOrder(),
 

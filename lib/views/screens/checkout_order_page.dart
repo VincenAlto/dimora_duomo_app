@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
 import 'package:dimora_duomo/models/models.dart';
@@ -133,19 +134,49 @@ class CheckOutOrderPage extends GetView<MenuController> {
               else
                 {
                   // HERE ADD ORDER TO FIRESTORE DATABASE
-                  menuController.order.forEach((key, value) {
-                    debugPrint('Added Order $roomSelected: $key: $value');
+                  // menuController.order.forEach((key, value) {
+                  // debugPrint('added Order $roomSelected: $key: $value');
+                  menuController.orderMapToOrdineList(),
+                  debugPrint('order: ${menuController.order.toString()}'),
 
-                    database.addOrderDB(
-                      OrderModel(
+                  FirebaseFirestore.instance
+                      .collection('orders')
+                      .withConverter(
+                          fromFirestore: OrderDbModel.fromFirestore,
+                          toFirestore: (OrderDbModel orderDbModel, options) =>
+                              orderDbModel.toFirestore())
+                      .doc(roomSelected)
+                      .set(OrderDbModel(
                         room: int.parse(roomSelected),
-                        name: key,
-                        quantity: value,
                         location: locationSelected,
                         hour: hourSelected,
-                      ),
-                    );
-                  }),
+                        orders: menuController.order2,
+                        // menuItems: [
+                        //   {'name': 'Giovanni', 'quantity': 1},
+                        //   {'name': 'Pasquale', 'quantity': 2}
+                        // ],
+                      ))
+                      .then((_) => debugPrint('Added'))
+                      .catchError((error) => debugPrint('Add failed: $error')),
+
+                  //OLD NOT USED
+                  // database.setOrderDB(
+                  //   OrderModel(
+                  //     room: int.parse(roomSelected),
+                  //     location: locationSelected,
+                  //     hour: hourSelected,
+                  //     // items: menuController.ordine,
+                  //     // ignore: avoid_function_literals_in_foreach_calls
+                  //     // items: menuController.order2.forEach((e) =>  e.name = 'ciao'),
+                  //     // menuController.order2.toList(),
+                  //     // items: [
+                  //     //   menuController.order,
+                  //     // ],
+                  //     // item: menuController.order.keys.toString(),
+
+                  //     // quantity: menuController.order.value,
+                  //   ),
+                  // ),
 
                   // After added order set orderLocal value = true
                   GetStorage().write('order', true),
@@ -155,10 +186,7 @@ class CheckOutOrderPage extends GetView<MenuController> {
                   GetStorage().write('dataOrdineFormatted',
                       dropdownController.dataOrdineFormatted),
                   //Remove the whole map order after the order was added on firebase
-                  menuController.removeMapOrder(),
-
-                  //  Set date order
-                  // debugPrint(dropdownController.orderSubmitted.value.toString()),
+                  // menuController.removeMapOrder(),
 
                   // Show Order submitted screen immediatly
                   Future.delayed(const Duration(seconds: 0), () {

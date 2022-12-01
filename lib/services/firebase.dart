@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dimora_duomo/models/models.dart';
-import 'package:flutter/material.dart';
 
 //final Future<FirebaseApp> initialization = Firebase.initializeApp();
 class FirestoreDB {
@@ -28,51 +27,31 @@ class FirestoreDB {
     });
   }
 
-  // Add a new order to Firestore
-  Future<void> addOrderDB(OrderModel order) {
-    return _firebaseFirestore.collection('orders').add(order.toMap()).then(
-        (documentSnapshot) => debugPrint("Added order: ${documentSnapshot.id}"),
-        onError: (e) => debugPrint("Error writing document $e"));
+  // Get a list of orders from Firestore
+  Stream<List<OrderDbModel>> getOrders() {
+    return FirebaseFirestore.instance
+        .collection('orders')
+        .withConverter(
+          fromFirestore: OrderDbModel.fromFirestore,
+          toFirestore: (OrderDbModel city, _) => city.toFirestore(),
+        )
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
-  // Future<void> updateOrder(
-  //   OrderModel order,
-  //   String field,
-  //   dynamic newValue,
-  // ) {
-  //   return _firebaseFirestore
-  //       .collection('orders')
-  //       .where('id', isEqualTo: order.id)
-  //       .get()
-  //       .then((querySnapshot) => {
-  //             querySnapshot.docs.first.reference.update({field: newValue})
-  //           });
+//OLD NOT USED
+  // Add a new order to Firestore
+  // Future<void> addOrderDB(OrderModel order) {
+  //   return _firebaseFirestore.collection('orders').add(order.toMap()).then(
+  //       (documentSnapshot) =>
+  //           debugPrint("Added order: ${documentSnapshot.id}"));
   // }
 
-  // Get a list of orders from Firestore
-  Stream<List<OrderListModel>> getOrders() {
+  Future<void> deleteOrderDB(int order) {
     return _firebaseFirestore
         .collection('orders')
-        .orderBy('room')
-        // .where('location', isEqualTo: 'In my Room')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => OrderListModel.fromSnapshot(doc))
-          .toList();
-    });
-  }
-
-  // Get a list of orders from Firestore
-  Stream<List<OrderListModel>> getOrders0(int room) {
-    return _firebaseFirestore
-        .collection('orders')
-        .where('room', isEqualTo: room)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => OrderListModel.fromSnapshot(doc))
-          .toList();
-    });
+        .where('room', isEqualTo: order)
+        .get()
+        .then((querySnapshot) => {querySnapshot.docs.first.reference.delete()});
   }
 }

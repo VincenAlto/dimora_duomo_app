@@ -4,6 +4,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 class InputController extends GetxController {
+  static InputController instance = Get.find();
+
+  final roomGlobal = ''.obs;
   /*
   ***************************************
   ********* DropDown Controller *********

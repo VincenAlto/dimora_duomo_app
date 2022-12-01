@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dimora_duomo/constants.dart';
 import 'package:dimora_duomo/controllers/controllers.dart';
-import 'package:dimora_duomo/models/order_model.dart';
+import 'package:dimora_duomo/models/models.dart';
 import 'package:dimora_duomo/views/screens/order_submitted.dart';
 import 'package:dimora_duomo/views/screens/screens.dart';
 import 'package:dimora_duomo/views/widgets/widgets.dart';
@@ -146,15 +147,32 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
               if (locationSelected == locations[1] &&
                   hourSelected == hoursBar[0])
                 {
-                  database.addOrderDB(
-                    OrderModel(
-                      room: int.parse(roomSelected),
-                      name: '',
-                      quantity: 0,
-                      location: locationSelected,
-                      hour: hourSelected,
-                    ),
-                  ),
+                  FirebaseFirestore.instance
+                      .collection('orders')
+                      .withConverter(
+                          fromFirestore: OrderDbModel.fromFirestore,
+                          toFirestore: (OrderDbModel orderDbModel, options) =>
+                              orderDbModel.toFirestore())
+                      .doc(roomSelected)
+                      .set(OrderDbModel(
+                          room: int.parse(roomSelected),
+                          location: locationSelected,
+                          hour: hourSelected,
+                          orders: null))
+                      .then((_) => debugPrint('Added'))
+                      .catchError((error) => debugPrint('Add failed: $error')),
+                  //OLD ADD NOT USED
+                  // database.addOrderDB(
+                  //   OrderModel(
+                  //     id: 'gsdgs',
+                  //     room: int.parse(roomSelected),
+                  //     name: '',
+                  //     quantity: 0,
+                  //     location: locationSelected,
+                  //     hour: hourSelected,
+                  //   ),
+                  // ),
+
                   // After added order set orderLocal value = true
                   GetStorage().write('order', true),
                   // dropdownController.dataOrdine = DateTime.now(),
@@ -162,8 +180,6 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
                       DateFormat('yyyy-MM-dd').format(DateTime.now()),
                   GetStorage().write('dataOrdineFormatted',
                       dropdownController.dataOrdineFormatted),
-                  // Set OrderStatus = TRUE if User select breakfast at the bar
-                  //dropdownController.changeOrderStatus(true),
 
                   // Show Order submitted screen immediatly
                   Future.delayed(const Duration(seconds: 0), () {

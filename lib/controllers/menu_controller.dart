@@ -11,15 +11,19 @@ class MenuController extends GetxController {
   //equivalent of RxList<FoodModel> foods = RxList<FoodModel>([]);
   var foods = <FoodModel>[].obs;
   var drinks = <DrinkModel>[].obs;
+  //Map to save item and quantity
   var order = <String, int>{}.obs;
-  var orderList = <OrderListModel>[].obs;
+  //List converted from Map order used to write on Firestore
+  List<Map<String, dynamic>> order2 = <Map<String, dynamic>>[];
+  //List of OrderDbModel reed from Firestore
+  var listOrder = <OrderDbModel>[].obs;
 
   @override
   onInit() {
     super.onInit();
     foods.bindStream(database.getFoods());
     drinks.bindStream(database.getDrinks());
-    orderList.bindStream(database.getOrders());
+    listOrder.bindStream(database.getOrders());
   }
 
   // ********* ORDER METHOD
@@ -68,7 +72,7 @@ class MenuController extends GetxController {
 
     update();
     debugPrint('ORDER MAP AFTER FOOD WAS ADDED: $order');
-    debugPrint(order.length.toString());
+    debugPrint('ORDER LENGTH: ${order.length.toString()}');
   }
 
   // Print as String quantity of specific item
@@ -133,5 +137,15 @@ class MenuController extends GetxController {
     update();
 
     debugPrint('Mappa dopo il remove: $order');
+  }
+
+  // Convert MapOrder to List of MapOrders to send to Firestore
+  orderMapToOrdineList() {
+    debugPrint('order2 prima: ${order2.toString()}');
+    debugPrint('order invece prima: ${order.toString()}');
+
+    order.forEach((key, value) => order2.add({'name': key, 'quantity': value}));
+
+    debugPrint('order2 dopo: ${order2.toString()}');
   }
 }

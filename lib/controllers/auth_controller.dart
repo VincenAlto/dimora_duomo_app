@@ -25,11 +25,19 @@ class AuthController extends GetxController {
       debugPrint('login page');
       Get.offAll(() => const LoginPage());
     } else {
-      if (staffValue) {
-        Get.offAll(() => StaffPage());
+      if (staffValue && auth.currentUser!.email! == 'staff@dimoraduomo.it') {
+        Get.offAll(() => const StaffPage());
+      } else if (staffValue &&
+          auth.currentUser!.email! != 'staff@dimoraduomo.it') {
+        Get.snackbar('About login', 'Login message',
+            colorText: kBackgroundColor,
+            backgroundColor: kButtonSecondaryColor,
+            titleText: const Text('Login failed',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            messageText: const Text(
+                'There is no staff account corresponding to this identifier.'));
       } else {
         Get.offAll(() => SelectRoomPage());
-        // Get.offAll(() => StaffPage());
       }
     }
   }

@@ -169,65 +169,67 @@ class MenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      // leading: !menuController.order.containsKey(food.name)
-      //     ? null
-      //     : IconButton(
-      //         icon: const Icon(Icons.delete, color: Colors.red),
-      //         onPressed: () => menuController.removeOrder(food.name),
-      //       ),
-      title: Text(
-        food.name,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-      trailing: SizedBox(
-        width: 130,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            IconButton(
-              iconSize: 24.0,
-              onPressed: () {
-                menuController.decreaseOrder(food.name);
-              },
-              icon: const Icon(
-                Icons.remove_circle_outline,
-                color: kPrimaryColor,
-              ),
-            ),
-            Container(
-                width: 25,
-                alignment: Alignment.center,
-                child: Text(
-                  menuController.printQuantity(food.name),
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                )
-                // (menuController.order.containsKey(food.name))
-                //     ? Text(menuController.order[food.name].toString())
-                //     : const Text('0')
-                //
+    return Obx(
+      () => ListTile(
+        // leading: !menuController.order.containsKey(food.name)
+        //     ? null
+        //     : IconButton(
+        //         icon: const Icon(Icons.delete, color: Colors.red),
+        //         onPressed: () => menuController.removeOrder(food.name),
+        //       ),
+        title: Text(
+          food.name,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        trailing: SizedBox(
+          width: 130,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                iconSize: 24.0,
+                onPressed: () {
+                  menuController.decreaseOrder(food.name);
+                },
+                icon: const Icon(
+                  Icons.remove_circle_outline,
+                  color: kPrimaryColor,
                 ),
-            IconButton(
-              iconSize: 24.0,
-              onPressed: () {
-                menuController.addOrder(food.name);
-                // if (menuController.order.containsKey(food.name)) {
-                //   menuController.increaseOrder(
-                //       food.name, menuController.order[food.name]!);
-                // } else {
-                //   menuController.addOrder(
-                //       menuController.foods[index].name, 1);
-                //   debugPrint('order: ${menuController.order.toString()}');
-                // }
-              },
-              icon: const Icon(
-                Icons.add_circle_outline,
-                color: kPrimaryColor,
               ),
-            ),
-          ],
+              Container(
+                  width: 25,
+                  alignment: Alignment.center,
+                  child: Text(
+                    menuController.printQuantity(food.name),
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  )
+                  // (menuController.order.containsKey(food.name))
+                  //     ? Text(menuController.order[food.name].toString())
+                  //     : const Text('0')
+                  //
+                  ),
+              IconButton(
+                iconSize: 24.0,
+                onPressed: () {
+                  menuController.addOrder(food.name);
+                  // if (menuController.order.containsKey(food.name)) {
+                  //   menuController.increaseOrder(
+                  //       food.name, menuController.order[food.name]!);
+                  // } else {
+                  //   menuController.addOrder(
+                  //       menuController.foods[index].name, 1);
+                  //   debugPrint('order: ${menuController.order.toString()}');
+                  // }
+                },
+                icon: const Icon(
+                  Icons.add_circle_outline,
+                  color: kPrimaryColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
