@@ -192,17 +192,29 @@ class _StaffCardState extends State<StaffCard> {
                 child: ElevatedButton(
                   onPressed: isButtonDisabled
                       ? null
-                      : () async {
-                          await FirebaseFirestore.instance
+                      : ()
+                      // async {
+                      //     await FirebaseFirestore.instance
+                      //         .collection("orders")
+                      //         .doc(widget.order.room.toString())
+                      //         .delete()
+                      //         .then(
+                      //           (doc) => debugPrint(
+                      //               "Document deleted ${widget.order.room.toString()}"),
+                      //           onError: (e) =>
+                      //               debugPrint("Error updating document $e"),
+                      //         );
+                      //     setState(() {
+                      //       isButtonDisabled = true;
+                      //     });
+                      //   },
+                      {
+                          FirebaseFirestore.instance
                               .collection("orders")
                               .doc(widget.order.room.toString())
-                              .delete()
-                              .then(
-                                (doc) => debugPrint(
-                                    "Document deleted ${widget.order.room.toString()}"),
-                                onError: (e) =>
-                                    debugPrint("Error updating document $e"),
-                              );
+                              .update({
+                            'status': 'Accepted',
+                          });
                           setState(() {
                             isButtonDisabled = true;
                           });

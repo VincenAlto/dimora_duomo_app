@@ -89,6 +89,7 @@ class SelectRoomPage extends StatelessWidget {
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                        textInputAction: TextInputAction.done,
                         maxLength: 3,
                         controller: roomNumberController,
                         decoration: InputDecoration(

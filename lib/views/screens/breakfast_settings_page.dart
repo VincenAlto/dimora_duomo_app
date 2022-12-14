@@ -158,6 +158,7 @@ class _BreakfastSettingsPageState extends State<BreakfastSettingsPage> {
                           room: int.parse(roomSelected),
                           location: locationSelected,
                           hour: hourSelected,
+                          status: 'Pending',
                           orders: null))
                       .then((_) => debugPrint('Added'))
                       .catchError((error) => debugPrint('Add failed: $error')),

@@ -21,10 +21,11 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
-              image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('assets/images/scaffold_BG_v2.png'),
-          )),
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage('assets/images/scaffold_BG_v2.png'),
+            ),
+          ),
           child: Stack(
             children: [
               Column(
@@ -54,6 +55,8 @@ class _LoginPageState extends State<LoginPage> {
                             color: kTertiaryColor,
                             iconColor: kButtonSecondaryColor,
                             onClick: () => {
+                              AuthController.instance.staffValue = false,
+                              // controller.signInWithFacebook,
                               AuthService().signInWithFacebook(),
                             },
                           ),
@@ -67,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: kTertiaryColor,
                             iconColor: kButtonSecondaryColor,
                             onClick: () => {
+                              AuthController.instance.staffValue = false,
                               // controller.signInWithGoogle,
                               AuthService().signInWithGoogle(),
                             },
@@ -103,18 +107,19 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               TextButton(
-                                  onPressed: () {
-                                    AuthController.instance.staffValue = true;
-                                    Get.to(() => LoginEmailPage(), arguments: [
-                                      AuthController.instance.staffValue
-                                    ]);
-                                  },
-                                  child: const Text(
-                                    'Click here',
-                                    style: TextStyle(
-                                        color: kTertiaryColor,
-                                        fontWeight: FontWeight.bold),
-                                  ))
+                                onPressed: () {
+                                  AuthController.instance.staffValue = true;
+                                  Get.to(() => LoginEmailPage(), arguments: [
+                                    AuthController.instance.staffValue
+                                  ]);
+                                },
+                                child: const Text(
+                                  'Click here',
+                                  style: TextStyle(
+                                      color: kTertiaryColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
                             ],
                           )
                         ],

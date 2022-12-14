@@ -31,6 +31,7 @@ class FirestoreDB {
   Stream<List<OrderDbModel>> getOrders() {
     return FirebaseFirestore.instance
         .collection('orders')
+        .where('status', isEqualTo: 'Pending')
         .withConverter(
           fromFirestore: OrderDbModel.fromFirestore,
           toFirestore: (OrderDbModel city, _) => city.toFirestore(),
@@ -47,11 +48,12 @@ class FirestoreDB {
   //           debugPrint("Added order: ${documentSnapshot.id}"));
   // }
 
-  Future<void> deleteOrderDB(int order) {
-    return _firebaseFirestore
-        .collection('orders')
-        .where('room', isEqualTo: order)
-        .get()
-        .then((querySnapshot) => {querySnapshot.docs.first.reference.delete()});
-  }
+//OLD NOT USED
+  // Future<void> deleteOrderDB(int order) {
+  //   return _firebaseFirestore
+  //       .collection('orders')
+  //       .where('room', isEqualTo: order)
+  //       .get()
+  //       .then((querySnapshot) => {querySnapshot.docs.first.reference.delete()});
+  // }
 }

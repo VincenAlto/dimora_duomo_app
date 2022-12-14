@@ -4,12 +4,14 @@ class OrderDbModel {
   final int room;
   final String location;
   final String hour;
+  final String status;
   final List<Map<String, dynamic>>? orders;
 
   OrderDbModel({
     required this.room,
     required this.location,
     required this.hour,
+    required this.status,
     this.orders,
   });
 
@@ -22,6 +24,7 @@ class OrderDbModel {
       room: data?['room'],
       location: data?['location'],
       hour: data?['hour'],
+      status: data?['status'],
       orders: data?['orders'] is Iterable ? List.from(data?['orders']) : null,
     );
   }
@@ -31,6 +34,7 @@ class OrderDbModel {
       "room": room,
       "location": location,
       "hour": hour,
+      "status": status,
       if (orders != null) "orders": orders,
     };
   }

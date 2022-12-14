@@ -1,3 +1,4 @@
+import 'package:dimora_duomo/controllers/controllers.dart';
 import 'package:dimora_duomo/views/screens/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class AuthService {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && AuthController.instance.staffValue) {
             return SelectRoomPage();
           } else {
             return const LoginPage();

@@ -151,6 +151,7 @@ class CheckOutOrderPage extends GetView<MenuController> {
                         location: locationSelected,
                         hour: hourSelected,
                         orders: menuController.order2,
+                        status: 'Pending',
                         // menuItems: [
                         //   {'name': 'Giovanni', 'quantity': 1},
                         //   {'name': 'Pasquale', 'quantity': 2}
