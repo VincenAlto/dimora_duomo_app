@@ -1,4 +1,3 @@
-import 'package:dimora_duomo/controllers/controllers.dart';
 import 'package:dimora_duomo/views/screens/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +5,17 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
+  //var staffValueLocal = false;
   //Determine if the user is authenticated.
   handleAuthState() {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
-          if (snapshot.hasData && AuthController.instance.staffValue) {
+          // if (GetStorage().read('staffValue') != null) {
+          //   staffValueLocal = GetStorage().read('staffValue');
+          // }
+
+          if (snapshot.hasData /* && staffValueLocal */) {
             return SelectRoomPage();
           } else {
             return const LoginPage();

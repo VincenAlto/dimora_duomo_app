@@ -21,6 +21,12 @@ class _StaffPageState extends State<StaffPage> {
   final FirestoreDB database = FirestoreDB();
 
   @override
+  void initState() {
+    database.getOrders();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

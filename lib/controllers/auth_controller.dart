@@ -3,6 +3,7 @@ import 'package:dimora_duomo/views/screens/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -18,6 +19,10 @@ class AuthController extends GetxController {
     //our user would be notified
     _user.bindStream(auth.userChanges());
     ever(_user, _initialScreen);
+
+    if (GetStorage().read('staffValue') != null) {
+      staffValue = GetStorage().read('staffValue');
+    }
   }
 
   _initialScreen(User? user) {
@@ -36,6 +41,14 @@ class AuthController extends GetxController {
                 style: TextStyle(fontWeight: FontWeight.bold)),
             messageText: const Text(
                 'There is no staff account corresponding to this identifier.'));
+      } else if (!staffValue &&
+          auth.currentUser!.email! == 'staff@dimoraduomo.it') {
+        Get.snackbar('About login', 'Login message',
+            colorText: kBackgroundColor,
+            backgroundColor: kButtonSecondaryColor,
+            titleText: const Text('Login failed',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            messageText: const Text('This is a staff account.'));
       } else {
         Get.offAll(() => SelectRoomPage());
       }

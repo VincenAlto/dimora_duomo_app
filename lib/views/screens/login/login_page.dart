@@ -2,6 +2,7 @@ import 'package:dimora_duomo/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../../controllers/controllers.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
@@ -56,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconColor: kButtonSecondaryColor,
                             onClick: () => {
                               AuthController.instance.staffValue = false,
+                              GetStorage().write('staffValue', false),
                               // controller.signInWithFacebook,
                               AuthService().signInWithFacebook(),
                             },
@@ -71,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconColor: kButtonSecondaryColor,
                             onClick: () => {
                               AuthController.instance.staffValue = false,
+                              GetStorage().write('staffValue', false),
                               // controller.signInWithGoogle,
                               AuthService().signInWithGoogle(),
                             },
@@ -90,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconColor: kTertiaryColor,
                             onClick: () => {
                               AuthController.instance.staffValue = false,
+                              GetStorage().write('staffValue', false),
                               Get.to(() => LoginEmailPage(), arguments: [
                                 AuthController.instance.staffValue
                               ]),
@@ -109,6 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                               TextButton(
                                 onPressed: () {
                                   AuthController.instance.staffValue = true;
+                                  GetStorage().write('staffValue', true);
                                   Get.to(() => LoginEmailPage(), arguments: [
                                     AuthController.instance.staffValue
                                   ]);
